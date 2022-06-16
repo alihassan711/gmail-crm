@@ -77,7 +77,7 @@ router.post('/sendMessage', async (req, res) => {
         const mailId = await gmail.sendMessage({to, subject, text, html, attachments})
         const data = await Email.create({email_id: mailId, case_id: req.body.case_id});
 
-        return res.send({message: 'Message sent!'})
+        return res.send({message: 'Message sent!', mailId: mailId})
     }catch(e){
         return res.send({error: e})
 	}
