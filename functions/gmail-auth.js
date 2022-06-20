@@ -1,7 +1,7 @@
 const { google } = require( 'googleapis')
 const  fs = require( 'fs-extra')
 const  path = require( 'path')
-const  credentials = require( '../credentials.json')
+// const  credentials = require( '../credentials.json')
 require("dotenv").config()
 
 const SCOPES = ['https://www.googleapis.com/auth/gmail.readonly','https://www.googleapis.com/auth/gmail.modify','https://www.googleapis.com/auth/gmail.compose','https://www.googleapis.com/auth/gmail.send']
