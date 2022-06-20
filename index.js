@@ -6,6 +6,8 @@ const  caseRoutes = require('./routes/case-routes')
 const  emailRoutes = require('./routes/email-routes')
 const  db = require( './models/index')
 const {authMiddleware} = require('./middleware/auth-middleware')
+require("dotenv").config({ path: `.env.${process.env.NODE_ENV}` })
+
 
 const app = express()
 
@@ -33,10 +35,11 @@ app.use('/case', caseRoutes)
 app.use('/email', emailRoutes)
 
 // start the server
-const PORT = 3000
+const PORT = process.env.PORT
+console.log("port", PORT)
 db.sequelize.sync().then(() => {
 	try {	
-		app.listen(PORT, () => {
+		app.listen(PORT || 5000, () => {
 		console.log(`App listening on port http://localhost:${PORT}`)
 		})
 	} catch (error) {

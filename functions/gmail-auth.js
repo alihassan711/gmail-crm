@@ -2,6 +2,7 @@ const { google } = require( 'googleapis')
 const  fs = require( 'fs-extra')
 const  path = require( 'path')
 const  credentials = require( '../credentials.json')
+require("dotenv").config()
 
 const SCOPES = ['https://www.googleapis.com/auth/gmail.readonly','https://www.googleapis.com/auth/gmail.modify','https://www.googleapis.com/auth/gmail.compose','https://www.googleapis.com/auth/gmail.send']
 const TOKEN_PATH = path.join(__dirname, '../token.json')
@@ -34,9 +35,14 @@ const TOKEN_PATH = path.join(__dirname, '../token.json')
 }
 
  const getOAuth2Client = () => {
-    const GOOGLE_CLIENT_ID = credentials.web.client_id
-    const GOOGLE_CLIENT_SECRET = credentials.web.client_secret
-    const GOOGLE_CALLBACK_URL = credentials.web.redirect_uris[0]
+
+    const GOOGLE_CLIENT_ID = process.env.CLIENT_ID
+    const GOOGLE_CLIENT_SECRET = process.env.CLIENT_SECRET
+    const GOOGLE_CALLBACK_URL = process.env.REDIRECT_URL
+
+    // const GOOGLE_CLIENT_ID = credentials.web.client_id
+    // const GOOGLE_CLIENT_SECRET = credentials.web.client_secret
+    // const GOOGLE_CALLBACK_URL = credentials.web.redirect_uris[0]
 
     const oAuth2Client = new google.auth.OAuth2(GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, GOOGLE_CALLBACK_URL)
     return oAuth2Client
