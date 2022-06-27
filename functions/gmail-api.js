@@ -152,4 +152,27 @@ const gmail = google.gmail('v1')
     
 }
 
-module.exports = { getMessages, getAttachment, getThread, sendMessage, getMessage, sendThreadMessage };
+
+const startWatch = async () => {
+     try {
+    //   const authGmail = await authenticate();
+    //   const resp = await authGmail.users.stop({
+    //     userId: 'me',
+    //   });
+    // console.log("authGmail", authGmail)
+      resp = await gmail.users.watch({
+        userId: 'me',
+        topicName:"projects/custom-zone-352815/topics/gmail-crm",
+        labelIds: ["UNREAD"],
+        labelFilterAction:  "include"
+      });
+    //   console.log("resp", resp)
+      return ("Successfully Started Watching - " ,resp.data);
+    }
+    catch(ex) {
+      return("Error occured: " + ex);
+    //   throw new Error("Error occured while starting gmail watch: " + ex);
+    }
+}
+
+module.exports = { getMessages, getAttachment, getThread, sendMessage, getMessage, sendThreadMessage, startWatch};

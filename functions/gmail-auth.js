@@ -39,6 +39,7 @@ const TOKEN_PATH = path.join(__dirname, '../token.json')
     const GOOGLE_CLIENT_ID = process.env.CLIENT_ID
     const GOOGLE_CLIENT_SECRET = process.env.CLIENT_SECRET
     const GOOGLE_CALLBACK_URL = process.env.REDIRECT_URL
+    
 
     // const GOOGLE_CLIENT_ID = credentials.web.client_id
     // const GOOGLE_CLIENT_SECRET = credentials.web.client_secret
@@ -57,4 +58,5 @@ const authenticate = (token) => {
     })
 }
 
-module.exports = { authorize, getNewToken, saveToken, getOAuth2Client };
+
+module.exports = { authorize, getNewToken, saveToken, getOAuth2Client, authenticate };

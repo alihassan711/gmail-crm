@@ -37,6 +37,7 @@ router.get('/oauth2Callback', async (req, res) => {
 		await auth.saveToken(tokens)
         return res.send("<script>window.close();</script>")
     }catch(e){ 
+        console.log("error", e)
         return res.send({error: e})
     }
 })

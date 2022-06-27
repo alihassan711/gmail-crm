@@ -1,11 +1,13 @@
 const  express = require('express')
 const gmail = require( '../functions/gmail-api')
+const gmailAuth = require( '../functions/gmail-auth')
+
 const  {Email}  = require( '../models')
 
 const router = express.Router()
 
 /**
- * Route for getting gmail messages
+ * Route for getting gmail messages startWatch
  */
 router.get('/getMessages', async (req, res) => {
 	try{
@@ -75,11 +77,15 @@ router.post('/sendMessage', async (req, res) => {
             throw 'Recipient email(s) is required'
         } 
         const mailId = await gmail.sendMessage({to, subject, text, html, attachments})
-        const data = await Email.create({email_id: mailId, case_id: req.body.case_id});
+        console.log(", mailId: mailId", mailId)
+        if( mailId?.data?.id){
 
-        return res.send({message: 'Message sent!', mailId: mailId})
+            const data = await Email.create({email_id: mailId, case_id: req.body.case_id});
+        }
+
+        return res.send({message: 'Message sent!'})
     }catch(e){
-        return res.send({error: e})
+        return res.send({error: e.message})
 	}
 })
 
@@ -101,6 +107,53 @@ router.post('/sendThreadMesssage', async (req, res) => {
         return res.send({error: e})
 	}
 })
+
+router.get('/startWatch', async (req, res) => {
+    try {
+         const watch = await gmail.startWatch();
+        console.log("watch", watch)
+        if(watch){
+            return res.json({
+                status: "success",
+                data: watch
+            })
+        }else{
+            throw new Error("No data found");
+        }
+    } catch (error) {
+        return res.json({
+            status: "error",
+            message: error.message
+        })
+        
+    }
+})
+
+router.post('/receivNotification', async (req, res) => {
+    try {
+        console.log("pushNotify")
+        console.log("body message", req.body.message)
+        const message = req.body.message;
+        if(message?.data){
+
+            return res.json({
+                status: "success",
+                data: message?.data
+            })
+        }else{
+            throw new Error("No data found")
+        }
+    } catch (error) {
+        console.log("error", error);
+        return res.json({
+            status: "error",
+            messsga: error.message
+        })
+        
+    }
+})
+
+
 // node ./dist/index.js
 
 module.exports = router;
