@@ -12,9 +12,13 @@ const router = express.Router()
 router.get('/getMessages', async (req, res) => {
 	try{
         const params = req.query
+        // const getMessage = await quickstart();
+        // console.log("getMessage", getMessage)
+        //  const historyMsg = await gmail.startWatch();
+        // console.log("historyMsg", historyMsg)
         const messages = await gmail.getMessages(params)
 
-        return res.send({messages})
+        return res.send({messages, historyMsg})
     }catch(e){
         console.error(e)
         return res.send({error: e})
@@ -27,7 +31,6 @@ router.get('/getMessages', async (req, res) => {
 router.get('/getMessage', async (req, res) => {
 	try{
         const messageId = req.query.messageId
-
         const message = await gmail.getMessage({messageId})
 
         return res.send({message})
@@ -136,11 +139,14 @@ router.post('/receiveNotification', async (req, res) => {
         // res.status(400).send();
         //  return;
         // }
+        console.log("webhook body", req.body.message)
 
         // The message is a unicode string encoded in base64.
         const message = Buffer.from(req.body.message.data, 'base64').toString(
             'utf-8'
         );
+
+
 
         console.log("message", message)
 

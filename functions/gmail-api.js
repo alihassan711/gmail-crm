@@ -2,6 +2,7 @@ const { google } = require('googleapis')
 const parseMessage  = require('gmail-api-parse-message')
 const MailComposer = require('nodemailer/lib/mail-composer')
 const gmail = google.gmail('v1')
+require("dotenv").config()
 
 /**
  * Get messages from gmail api
@@ -162,7 +163,7 @@ const startWatch = async () => {
     // console.log("authGmail", authGmail)
       resp = await gmail.users.watch({
         userId: 'me',
-        topicName:"projects/custom-zone-352815/topics/gmail-crm",
+        topicName: process.env.TOPIC_NAME,
         labelIds: ["UNREAD"],
         labelFilterAction:  "include"
       });
@@ -175,4 +176,18 @@ const startWatch = async () => {
     }
 }
 
-module.exports = { getMessages, getAttachment, getThread, sendMessage, getMessage, sendThreadMessage, startWatch};
+const historyList = async (historyId) => {
+    try {
+         resp = await gmail.users.history.list({
+            startHistoryId: historyId,
+            userId: 'me',
+            labelId: ["UNREAD"],
+            historyTypes: ["messageAdded","labelAdded"]
+         })
+         return ("Successfully get history list - " ,resp.data);
+    } catch (error) {
+        return("Error occured: ", error);
+    }
+}
+
+module.exports = { getMessages, getAttachment, getThread, sendMessage, getMessage, sendThreadMessage, startWatch, historyList};
