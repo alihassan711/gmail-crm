@@ -129,20 +129,24 @@ router.get('/startWatch', async (req, res) => {
     }
 })
 
-router.post('/receivNotification', async (req, res) => {
+router.post('/receiveNotification', async (req, res) => {
     try {
         console.log("pushNotify")
-        console.log("body message", req.body.message)
-        const message = req.body.message;
-        if(message?.data){
+        // if (req.query.token !== PUBSUB_VERIFICATION_TOKEN) {
+        // res.status(400).send();
+        //  return;
+        // }
 
-            return res.json({
-                status: "success",
-                data: message?.data
-            })
-        }else{
-            throw new Error("No data found")
-        }
+        // The message is a unicode string encoded in base64.
+        const message = Buffer.from(req.body.message.data, 'base64').toString(
+            'utf-8'
+        );
+
+        console.log("message", message)
+
+//   messages.push(message);
+
+        res.status(200).send();
     } catch (error) {
         console.log("error", error);
         return res.json({

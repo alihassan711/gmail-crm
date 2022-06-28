@@ -31,10 +31,10 @@ router.get('/oauth2Callback', async (req, res) => {
     try{
         // get authorization code from request
         const code =  req.query.code
-        const oAuth2Client = auth.getOAuth2Client()
+        const oAuth2Client = auth.getOAuth2Client();
         const result = await oAuth2Client.getToken(code)
         const tokens = result.tokens
-		await auth.saveToken(tokens)
+		await auth.saveToken(tokens);
         return res.send("<script>window.close();</script>")
     }catch(e){ 
         console.log("error", e)

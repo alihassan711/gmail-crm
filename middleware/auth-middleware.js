@@ -3,7 +3,7 @@ const auth = require( '../functions/gmail-auth');
 const authMiddleware = async (req, res, next) => {
     try{
         const authenticated = await auth.authorize()
-        console.log("authenticated", authenticated)
+        console.log("authenticated::", authenticated)
         if(!authenticated){
             throw 'No Authenticated'
         }
