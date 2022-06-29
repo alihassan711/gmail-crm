@@ -14,7 +14,9 @@ module.exports = (sequelize, DataTypes) => {
   }
   Email.init({
     email_id: DataTypes.STRING,
-    case_id: DataTypes.INTEGER
+    case_id: DataTypes.INTEGER,
+    sender_email: DataTypes.STRING,
+    reciever_email: DataTypes.STRING
   }, {
     sequelize,
     modelName: 'Email',

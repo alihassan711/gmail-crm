@@ -9,15 +9,10 @@ const router = express.Router()
  */
 router.get('/gmailAuth', async (req, res) => {
 	try{
-        const authenticated = await auth.authorize()
 
-        // if not authenticated, request new token
-        if(!authenticated){
-            const authorizeUrl = await auth.getNewToken()
-            return res.send(`<script>window.open("${authorizeUrl}", "_blank");</script>`)
-        }
+        const authorizeUrl = await auth.getNewToken()
+        return res.send(`<script>window.open("${authorizeUrl}", "_blank");</script>`)
 
-        return res.send({text: 'Authenticated'})
     }catch(e){
         return res.send({error: e})
 	}
@@ -34,11 +29,14 @@ router.get('/oauth2Callback', async (req, res) => {
         const oAuth2Client = auth.getOAuth2Client();
         const result = await oAuth2Client.getToken(code)
         const tokens = result.tokens
-		await auth.saveToken(tokens);
-        return res.send("<script>window.close();</script>")
+        if(tokens){
+            return res.json({access_token: tokens.access_token})
+        }
+
+		
     }catch(e){ 
         console.log("error", e)
-        return res.send({error: e})
+        return res.send({error: e.message})
     }
 })
 

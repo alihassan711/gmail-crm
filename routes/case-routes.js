@@ -37,7 +37,7 @@ router.post ('/', async (req, res) => {
         data,
       });
     } else {
-      throw new Error("No data Created");
+      throw new Error("No case Created");
     }
     } catch (error) {
        return  res.json({

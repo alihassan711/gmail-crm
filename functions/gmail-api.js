@@ -156,23 +156,17 @@ require("dotenv").config()
 
 const startWatch = async () => {
      try {
-    //   const authGmail = await authenticate();
-    //   const resp = await authGmail.users.stop({
-    //     userId: 'me',
-    //   });
-    // console.log("authGmail", authGmail)
+
       resp = await gmail.users.watch({
         userId: 'me',
         topicName: process.env.TOPIC_NAME,
-        labelIds: ["UNREAD"],
+        labelIds: ["INBOX"],
         labelFilterAction:  "include"
       });
-    //   console.log("resp", resp)
       return ("Successfully Started Watching - " ,resp.data);
     }
     catch(ex) {
       return("Error occured: " + ex);
-    //   throw new Error("Error occured while starting gmail watch: " + ex);
     }
 }
 
