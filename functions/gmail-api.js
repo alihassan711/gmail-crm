@@ -184,7 +184,7 @@ const historyList = async (historyId) => {
             labelId: ["UNREAD"],
             historyTypes: ["messageAdded","labelAdded"]
          })
-         return ("Successfully get history list - " ,resp.data);
+         return ("Successfully get history list - ",resp.data);
     } catch (error) {
         return("Error occured: ", error);
     }

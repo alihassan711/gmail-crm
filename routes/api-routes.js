@@ -18,7 +18,7 @@ router.get('/getMessages', async (req, res) => {
         // console.log("historyMsg", historyMsg)
         const messages = await gmail.getMessages(params)
 
-        return res.send({messages, historyMsg})
+        return res.send({messages})
     }catch(e){
         console.error(e)
         return res.send({error: e})
@@ -145,9 +145,6 @@ router.post('/receiveNotification', async (req, res) => {
         const message = Buffer.from(req.body.message.data, 'base64').toString(
             'utf-8'
         );
-
-
-
         console.log("message", message)
 
 //   messages.push(message);
